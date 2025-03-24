@@ -1,4 +1,4 @@
-# MCP Gradle Tools
+# Gradle MCP Server
 
 A Model Context Protocol (MCP) server to enable AI tools to interact with Gradle projects programmatically.
 Uses [Gradle Tooling API](https://docs.gradle.org/current/userguide/tooling_api.html) under the hood
