@@ -7,7 +7,6 @@ Uses [Gradle Tooling API](https://docs.gradle.org/current/userguide/tooling_api.
 
 - **Project Information**: Retrieve metadata about Gradle projects
 - **Task Execution**: Run Gradle tasks remotely
-- **Test Runner**: Execute tests in Gradle projects
 
 ## Requirements
 
