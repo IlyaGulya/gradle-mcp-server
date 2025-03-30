@@ -120,7 +120,7 @@ The server exposes the following tools via the Model Context Protocol:
         -   `environmentVariables` (object, optional): Environment variables for the build (e.g., `{"CI": "true"}`).
     -   **Output**: Formatted text response with execution summary, final status (`Success`/`Failure`), and combined stdout/stderr.
 
-3.  **`Run Gradle Tests with Hierarchy`**
+3.  **`Run Gradle Tests`**
     -   **Description**: Executes Gradle test tasks and returns results as a structured JSON hierarchy (Suite > Class > Test). Filters/truncates output lines by default, focusing on failures. Provides options to include output for passed tests and control log limits.
     -   **Key Inputs**:
         -   `projectPath` (string, required): Absolute path to the Gradle project root.

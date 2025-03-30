@@ -1,3 +1,5 @@
+package me.gulya.gradle.mcp
+
 import io.modelcontextprotocol.kotlin.sdk.Tool
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement

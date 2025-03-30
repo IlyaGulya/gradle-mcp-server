@@ -9,7 +9,7 @@ group = "me.gulya.gradle"
 version = "1.0-SNAPSHOT"
 
 application {
-    mainClass = "MainKt"
+    mainClass = "me.gulya.gradle.mcp.MainKt"
 }
 
 dependencies {
