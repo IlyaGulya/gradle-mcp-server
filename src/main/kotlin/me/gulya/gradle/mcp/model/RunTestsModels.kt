@@ -2,21 +2,6 @@ package me.gulya.gradle.mcp.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import org.gradle.tooling.events.OperationDescriptor
-
-// Note: This was defined but unused in the original Execute Task tool response.
-// Keeping it here if needed later, but hierarchical response is primary.
-@Serializable
-data class TestEventData(
-    @SerialName("display_name")
-    val displayName: String,
-    @SerialName("outcome")
-    val outcome: String,
-    @SerialName("failure_message")
-    val failureMessage: String? = null,
-    @SerialName("output_lines")
-    val outputLines: List<String> = emptyList()
-)
 
 @Serializable
 data class GradleTestResponse(
@@ -48,10 +33,7 @@ data class TestResultNode(
     var outputLines: List<String> = emptyList(), // Populated from TestOutputEvent for atomic tests
     @SerialName("children")
     val children: MutableList<TestResultNode> = mutableListOf()
-) {
-    @kotlinx.serialization.Transient // Exclude from serialization
-    var descriptor: OperationDescriptor? = null // Transient field used during processing
-}
+)
 
 // --- Helper function for log truncation (moved here for proximity) ---
 object LogUtils {
