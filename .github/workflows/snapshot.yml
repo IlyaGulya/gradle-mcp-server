@@ -1,0 +1,43 @@
+name: Snapshot Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+      
+      - name: Build with Gradle
+        run: ./gradlew build shadowJar
+      
+      - name: Generate snapshot version
+        id: snapshot_version
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo "SNAPSHOT_VERSION=snapshot-${SHORT_SHA}" >> $GITHUB_ENV
+      
+      - name: Create or update snapshot release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Latest Snapshot
+          tag_name: snapshot
+          files: |
+            build/libs/*-all.jar
+          draft: false
+          prerelease: true
+          body: |
+            Snapshot build from commit ${{ github.sha }}
+            Built on $(date)
