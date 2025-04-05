@@ -12,6 +12,8 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       
       - name: Set up JDK
         uses: actions/setup-java@v4
@@ -22,13 +24,7 @@ jobs:
       
       - name: Build with Gradle
         run: ./gradlew build shadowJar
-      
-      - name: Generate snapshot version
-        id: snapshot_version
-        run: |
-          SHORT_SHA=$(git rev-parse --short HEAD)
-          echo "SNAPSHOT_VERSION=snapshot-${SHORT_SHA}" >> $GITHUB_ENV
-      
+
       - name: Create or update snapshot release
         uses: softprops/action-gh-release@v2
         with:
