@@ -38,6 +38,3 @@ jobs:
             build/libs/*-all.jar
           draft: false
           prerelease: true
-          body: |
-            Snapshot build from commit ${{ github.sha }}
-            Built on $(date)
