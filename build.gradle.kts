@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.kotlinJvm)
     alias(libs.plugins.kotlinSerialization)
@@ -30,8 +28,8 @@ dependencies {
 }
 
 kotlin {
+    jvmToolchain(17)
     compilerOptions {
-        jvmTarget = JvmTarget.JVM_11
         freeCompilerArgs.addAll(
             "-Xdebug",
             "-Xmulti-dollar-interpolation",
@@ -41,7 +39,4 @@ kotlin {
 
 tasks.test {
     useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(17)
 }
