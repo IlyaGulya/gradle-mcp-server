@@ -21,83 +21,71 @@ Provides tools for:
 
 ## Requirements
 
--   JDK 21 or higher (as configured in `build.gradle.kts`)
+-   JDK 17 or higher
+-   For command-line installation:
+    -   Linux/macOS: `curl`
+    -   Windows: PowerShell 5+
 
-## Getting Started
+## Installation
 
-### Build
+### Recommended Method: Command-Line Download
 
-Build the application and its dependencies:
+This method downloads the latest server JAR to a standard location in your home directory.
 
-```bash
-./gradlew build
-```
-
-### Package
-
-Create a self-contained runnable JAR:
+**Linux / macOS (requires `curl`):**
 
 ```bash
-./gradlew shadowJar
+# Downloads gradle-mcp-server-all.jar to ~/mcp-servers/gradle-mcp-server/
+TARGET_DIR="$HOME/mcp-servers/gradle-mcp-server" && mkdir -p "$TARGET_DIR" && FILENAME="gradle-mcp-server-all.jar" && LATEST_TAG=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/IlyaGulya/gradle-mcp-server/releases/latest)) && curl -fSL -o "$TARGET_DIR/$FILENAME" "https://github.com/IlyaGulya/gradle-mcp-server/releases/download/${LATEST_TAG}/$FILENAME" && echo "Downloaded '$FILENAME' to '$TARGET_DIR'." || echo "Download failed."
 ```
 
-The JAR file will be located in `build/libs/`.
+**Windows (PowerShell 5+):**
 
-### Run
+```powershell
+# Requires PowerShell 5+. Downloads gradle-mcp-server-all.jar to %USERPROFILE%\mcp-servers\gradle-mcp-server\
+$targetDir = Join-Path $env:USERPROFILE "mcp-servers\gradle-mcp-server"; if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }; $fileName = "gradle-mcp-server-all.jar"; $releaseUri = "https://api.github.com/repos/IlyaGulya/gradle-mcp-server/releases/latest"; try { $releaseInfo = Invoke-RestMethod $releaseUri -ErrorAction Stop; $asset = $releaseInfo.assets | Where-Object {$_.name -eq $fileName} | Select-Object -First 1; if ($null -eq $asset) { throw "Could not find asset '$fileName' in latest release." }; $outFile = Join-Path $targetDir $fileName; Write-Host "Downloading $fileName..."; Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outFile -ErrorAction Stop; Write-Host "Downloaded '$fileName' to '$targetDir'." } catch { Write-Error "Failed: $($_.Exception.Message)" }
+```
 
-The server can be run in different modes using command-line arguments passed after `--args`.
+### Alternative Method: Manual Download
 
-1.  **Standard I/O Mode (Default)**:
-    Communicates over `stdin` and `stdout`. This is the default if no mode argument is provided.
+1.  Go to the [GitHub Releases page](https://github.com/IlyaGulya/gradle-mcp-server/releases).
+2.  Download the `gradle-mcp-server-all.jar` asset from the latest release.
+3.  Save the downloaded JAR file to a stable location. We recommend:
+    *   macOS / Linux: `~/mcp-servers/gradle-mcp-server/`
+    *   Windows: `%USERPROFILE%\mcp-servers\gradle-mcp-server\`
+    (Create the directory if it doesn't exist).
 
-    ```bash
-    # Run directly via Gradle
-    ./gradlew run
+## MCP Client Configuration
 
-    # Run the packaged JAR
-    java -jar build/libs/gradle-mcp-server-*-all.jar
+To use this server with an MCP client (like the VSCode extension or Claude Desktop app), you need to add its configuration to the client's settings file.
+
+1.  **Locate the settings file:**
+    *   VSCode Extension (Example for macOS): `/Users/<YourUsername>/Library/Application Support/VSCodium/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` (Adjust path for standard VSCode or other OS).
+    *   Claude Desktop App (Example for macOS): `~/Library/Application Support/Claude/claude_desktop_config.json` (Adjust path for other OS).
+
+2.  **Add the server configuration:** Edit the JSON file and add the following entry inside the `mcpServers` object. **Replace `<absolute_path_to_home>` with the actual absolute path to your home directory.**
+
+    ```json
+    {
+      "mcpServers": {
+        "gradle-mcp-server": {
+          "command": "java",
+          "args": [
+            "-jar",
+            "<absolute_path_to_home>/mcp-servers/gradle-mcp-server/gradle-mcp-server-all.jar"
+          ],
+          "env": {},
+          "disabled": false,
+          "autoApprove": []
+        }
+      }
+    }
     ```
 
-2.  **Server-Sent Events (SSE) Mode**:
-    Runs an HTTP server using Ktor, exposing an MCP endpoint via SSE.
+## Usage
 
-    ```bash
-    # Run via Gradle on default port 3001
-    ./gradlew run --args="--sse"
-
-    # Run via Gradle on a specific port (e.g., 8080)
-    ./gradlew run --args="--sse 8080"
-
-    # Run the packaged JAR on default port 3001
-    java -jar build/libs/gradle-mcp-server-*-all.jar --sse
-
-    # Run the packaged JAR on a specific port (e.g., 8080)
-    java -jar build/libs/gradle-mcp-server-*-all.jar --sse 8080
-    ```
-
-    Connect MCP clients (like the Anthropic Console Inspector) to `http://localhost:<port>/sse`.
-
-3.  **Debug Mode**:
-    Enable detailed server-side logging by adding the `--debug` flag. This can be combined with other modes.
-
-    ```bash
-    # Run in stdio mode with debug logs
-    ./gradlew run --args="--debug"
-
-    # Run in SSE mode on port 3001 with debug logs
-    ./gradlew run --args="--sse --debug"
-
-    # Run the packaged JAR in SSE mode on port 8080 with debug logs
-    java -jar build/libs/gradle-mcp-server-*-all.jar --sse 8080 --debug
-    ```
-
-## Configuration
-
-The server behavior is controlled via command-line arguments:
-
--   `--stdio`: (Default) Use standard input/output for MCP communication.
--   `--sse [port]`: Run as an SSE server on the specified `port` (defaults to 3001 if port is omitted).
--   `--debug`: Enable verbose logging on the server console.
+1.  After adding the configuration, **restart your MCP client** (e.g., reload the VSCode window or restart the Claude app).
+2.  The "Gradle MCP Server" and its tools (listed below) should now be available for use within the client. The server runs automatically via stdio when needed by the client.
 
 ## Available Tools
 
@@ -132,6 +120,40 @@ The server exposes the following tools via the Model Context Protocol:
         -   `maxLogLines` (integer, optional): Override the default limit on output lines per test (0 for unlimited).
         -   `defaultMaxLogLines` (integer, optional): Set the default output line limit (defaults internally to 100).
     -   **Output**: JSON object (`GradleHierarchicalTestResponse`) containing execution details, overall build success status, informative notes, and the `test_hierarchy` tree. Each node includes display name, type, outcome, failure message (if any), filtered/truncated output lines, and children.
+
+## Development
+
+### Building from Source
+
+If you want to build the server yourself:
+
+1.  Clone the repository.
+2.  Ensure you have JDK 17 or higher installed.
+3.  Run the build command:
+    ```bash
+    ./gradlew shadowJar
+    ```
+4.  The self-contained JAR (`gradle-mcp-server-<version>-all.jar`) will be created in the `build/libs/` directory. You can then configure your MCP client to use this JAR (remember to use the correct absolute path and version in the configuration).
+
+### Running Locally (for Testing)
+
+You can run the built JAR directly from the command line for testing purposes. The server communicates over stdio by default.
+
+```bash
+# Run the packaged JAR in stdio mode
+java -jar build/libs/gradle-mcp-server-<version>-all.jar
+
+# Run with specific arguments (see Configuration section)
+java -jar build/libs/gradle-mcp-server-<version>-all.jar --sse 8080 --debug
+```
+
+## Configuration (Command-Line Arguments)
+
+When running the server JAR directly (primarily for testing/development), its behavior can be controlled via command-line arguments:
+
+-   `--stdio`: (Default) Use standard input/output for MCP communication.
+-   `--sse [port]`: Run as an SSE server on the specified `port` (defaults to 3001 if port is omitted). Connect MCP clients (like the Anthropic Console Inspector) to `http://localhost:<port>/sse`.
+-   `--debug`: Enable verbose logging on the server console.
 
 ## Dependencies
 
