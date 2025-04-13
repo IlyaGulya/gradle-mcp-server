@@ -12,8 +12,7 @@ kotlinxCoroutinesTest = "1.10.1"
 [libraries]
 gradleToolingApi = { module = "org.gradle:gradle-tooling-api", version.ref = "gradleToolingApi" }
 logbackClassic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-anthropicMcpKotlinSdk = "com.github.wiremock-inc:anthropic-mcp-kotlin-sdk:877016f6cf"
-#anthropicMcpKotlinSdk = "io.modelcontextprotocol:kotlin-sdk:0.4.0"
+anthropicMcpKotlinSdk = "io.modelcontextprotocol:kotlin-sdk:0.4.0"
 commonsIo = { module = "commons-io:commons-io", version.ref = "commonsIo" }
 assertjCore = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 striktBom = { module = "io.strikt:strikt-bom", version.ref = "strikt" }
