@@ -30,20 +30,20 @@ Provides tools for:
 
 ### Recommended Method: Command-Line Download
 
-This method downloads the latest server JAR to a standard location in your home directory.
+This method downloads the server JAR to a standard location in your home directory.
 
 **Linux / macOS (requires `curl`):**
 
 ```bash
 # Downloads gradle-mcp-server-all.jar to ~/mcp-servers/gradle-mcp-server/
-TARGET_DIR="$HOME/mcp-servers/gradle-mcp-server" && mkdir -p "$TARGET_DIR" && FILENAME="gradle-mcp-server-all.jar" && LATEST_TAG=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/IlyaGulya/gradle-mcp-server/releases/latest)) && curl -fSL -o "$TARGET_DIR/$FILENAME" "https://github.com/IlyaGulya/gradle-mcp-server/releases/download/${LATEST_TAG}/$FILENAME" && echo "Downloaded '$FILENAME' to '$TARGET_DIR'." || echo "Download failed."
+TARGET_DIR="$HOME/mcp-servers/gradle-mcp-server" && mkdir -p "$TARGET_DIR" && curl -fSL -o "$TARGET_DIR/gradle-mcp-server-all.jar" "https://github.com/IlyaGulya/gradle-mcp-server/releases/latest/download/gradle-mcp-server-all.jar" && echo "Downloaded to '$TARGET_DIR'." || echo "Download failed."
 ```
 
 **Windows (PowerShell 5+):**
 
 ```powershell
-# Requires PowerShell 5+. Downloads gradle-mcp-server-all.jar to %USERPROFILE%\mcp-servers\gradle-mcp-server\
-$targetDir = Join-Path $env:USERPROFILE "mcp-servers\gradle-mcp-server"; if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }; $fileName = "gradle-mcp-server-all.jar"; $releaseUri = "https://api.github.com/repos/IlyaGulya/gradle-mcp-server/releases/latest"; try { $releaseInfo = Invoke-RestMethod $releaseUri -ErrorAction Stop; $asset = $releaseInfo.assets | Where-Object {$_.name -eq $fileName} | Select-Object -First 1; if ($null -eq $asset) { throw "Could not find asset '$fileName' in latest release." }; $outFile = Join-Path $targetDir $fileName; Write-Host "Downloading $fileName..."; Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $outFile -ErrorAction Stop; Write-Host "Downloaded '$fileName' to '$targetDir'." } catch { Write-Error "Failed: $($_.Exception.Message)" }
+# Downloads gradle-mcp-server-all.jar to %USERPROFILE%\mcp-servers\gradle-mcp-server\
+$targetDir = Join-Path $env:USERPROFILE "mcp-servers\gradle-mcp-server"; if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }; $outFile = Join-Path $targetDir "gradle-mcp-server-all.jar"; Write-Host "Downloading..."; Invoke-WebRequest -Uri "https://github.com/IlyaGulya/gradle-mcp-server/releases/latest/download/gradle-mcp-server-all.jar" -OutFile $outFile -ErrorAction Stop; Write-Host "Downloaded to '$targetDir'."
 ```
 
 ### Alternative Method: Manual Download
