@@ -26,7 +26,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 class GetProjectInfoTool : GradleTool {
     private val log = logger<GetProjectInfoTool>()
-    override val name = "Get Gradle Project Info"
+    override val name = "get_gradle_project_info"
     override val description = """
         Retrieves specific details about a Gradle project, returning structured JSON.
         Allows requesting only the necessary information for better efficiency.

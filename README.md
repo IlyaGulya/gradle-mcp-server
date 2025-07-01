@@ -91,14 +91,14 @@ To use this server with an MCP client (like the VSCode extension or Claude Deskt
 
 The server exposes the following tools via the Model Context Protocol:
 
-1.  **`Get Gradle Project Info`**
+1.  **`get_gradle_project_info`**
     -   **Description**: Retrieves specific details about a Gradle project, returning structured JSON. Allows requesting only necessary information categories (`buildStructure`, `tasks`, `environment`, `projectDetails`). If `requestedInfo` is omitted, all categories are fetched.
     -   **Key Inputs**:
         -   `projectPath` (string, required): Absolute path to the Gradle project root.
         -   `requestedInfo` (array of strings, optional): List of categories to retrieve (e.g., `["tasks", "environment"]`).
     -   **Output**: JSON object (`GradleProjectInfoResponse`) containing the requested data fields and potential errors.
 
-2.  **`Execute Gradle Task`**
+2.  **`execute_gradle_task`**
     -   **Description**: Executes general Gradle tasks (like `build`, `clean`). **Not recommended for running tests if detailed results are needed** (use the test tool instead). Returns formatted text output summarizing execution and including captured stdout/stderr.
     -   **Key Inputs**:
         -   `projectPath` (string, required): Absolute path to the Gradle project root.
@@ -108,7 +108,7 @@ The server exposes the following tools via the Model Context Protocol:
         -   `environmentVariables` (object, optional): Environment variables for the build (e.g., `{"CI": "true"}`).
     -   **Output**: Formatted text response with execution summary, final status (`Success`/`Failure`), and combined stdout/stderr.
 
-3.  **`Run Gradle Tests`**
+3.  **`run_gradle_tests`**
     -   **Description**: Executes Gradle test tasks and returns results as a structured JSON hierarchy (Suite > Class > Test). Filters/truncates output lines by default, focusing on failures. Provides options to include output for passed tests and control log limits.
     -   **Key Inputs**:
         -   `projectPath` (string, required): Absolute path to the Gradle project root.

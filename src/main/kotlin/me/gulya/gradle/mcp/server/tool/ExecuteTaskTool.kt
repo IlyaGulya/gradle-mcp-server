@@ -14,11 +14,11 @@ import me.gulya.gradle.mcp.inputSchema
 
 class ExecuteTaskTool : GradleTool {
     private val log = logger<ExecuteTaskTool>()
-    override val name = "Execute Gradle Task"
+    override val name = "execute_gradle_task"
     override val description = """
         Executes one or more specified Gradle tasks in a project.
         **Use this for general build lifecycle tasks** (like 'clean', 'build', 'assemble', 'publish') or **custom tasks** defined in the build scripts.
-        **DO NOT use this tool to run tests if you need detailed, per-test results and output.** Use the 'Run Gradle Tests' tool for testing instead.
+        **DO NOT use this tool to run tests if you need detailed, per-test results and output.** Use the 'run_gradle_tests' tool for testing instead.
 
         Allows customization:
         - `tasks`: List of task names to execute (e.g., ['clean', 'build']). Order matters.
