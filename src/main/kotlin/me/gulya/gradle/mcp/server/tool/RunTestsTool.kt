@@ -52,7 +52,7 @@ data class MethodFilterSpec(
 class RunTestsTool : GradleTool {
     private val log = logger<RunTestsTool>()
 
-    override val name = "Run Gradle Tests"
+    override val name = "run_gradle_tests"
     override val description = """
         Runs specified Gradle test tasks (default: ':test'), returning hierarchical JSON results. Supports filtering tests (e.g., by class, method). Output for passed tests is excluded by default (set 'includeOutputForPassed: true' only if debugging passed tests). Output lines are limited by default.
         """.trimIndent()
