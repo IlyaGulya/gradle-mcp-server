@@ -1,5 +1,7 @@
 # Gradle MCP Server
 
+[![Kotlin](https://img.shields.io/badge/kotlin-1.9+-blue)](https://kotlinlang.org/) [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![MCPAmpel](https://img.shields.io/endpoint?url=https://mcpampel.com/badge/ilyagulya/gradle-mcp-server.json)](https://mcpampel.com/repo/ilyagulya/gradle-mcp-server)
+
 A Model Context Protocol (MCP) server that enables AI tools to interact with Gradle projects programmatically. It uses the [Gradle Tooling API](https://docs.gradle.org/current/userguide/tooling_api.html) to query project information and execute tasks.
 
 ## Features
