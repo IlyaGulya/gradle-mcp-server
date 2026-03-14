@@ -1,5 +1,7 @@
 # Gradle MCP Server
 
+> **⚠️ This project is no longer maintained. Please use [gradle-mcp](https://github.com/rnett/gradle-mcp) instead.**
+
 A Model Context Protocol (MCP) server that enables AI tools to interact with Gradle projects programmatically. It uses the [Gradle Tooling API](https://docs.gradle.org/current/userguide/tooling_api.html) to query project information and execute tasks.
 
 ## Features
